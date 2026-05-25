@@ -14,7 +14,7 @@ SENDER=${3}
 [[ -x /usr/sbin/pflogsumm ]] || _exit_with_error "'/usr/sbin/pflogsumm' not found or executable"
 
 # shellcheck disable=SC2046
-BODY=$(gzip -cdfq $(ls -tr /var/log/mail/mail.log*) | /usr/sbin/pflogsumm --problems_first -d yesterday)
+BODY=$(gzip -cdfq $(ls -tr $(find /var/log/mail -name 'mail.log*' -mtime -365)) | /usr/sbin/pflogsumm --problems_first -d yesterday)
 
 sendmail -t <<EOF
 From: ${SENDER}
